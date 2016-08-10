@@ -1,0 +1,206 @@
+﻿<div class="container">
+    <div class="row">
+        <!-- start header -->
+        <div class="col-sm-4 col-xs-6 logo">
+            <a href="/">
+               
+                <div class="row">
+                    <div class="col-sm-3 hidden-xs logo-img" style="width:250px; height:auto">
+                        <img src="../../../images/rapid rents logo long_white.png" />
+                    </div>
+                    <!--<div class="col-sm-9 logo-text">
+                        <h1><small>Welcome to</small><br /><span>Rapid Rents</span> LA</h1>
+                    </div>-->
+                </div>
+            </a>
+        </div>
+
+
+        <div class="row">
+            <!-- start nav -->
+            <div class="col-sm-12" data-ng-controller="navController as nav">
+
+                <nav class="navbar navbar-inverse" role="navigation">
+                    <div class="navbar-inner">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand visible-xs" href="#">Menu</a>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse navbar-ex1-collapse">
+                            <ul class="nav navbar-nav">
+
+                                <li><a href="/listings">Listings</a></li>
+                                <li><a href="/properties/maplist">Properties map</a></li>
+                                <li><a href="/addresses/rentcheck">Check My Rent</a></li>
+
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Property pages <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                      
+                                        <li><a href="/listings/comparelistings">Compare Listings</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Other pages <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                
+                                        <li><a href="/contact">Contact us</a></li>
+                                        <li><a href="about.html">About us</a></li>
+                                        
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="nav navbar-nav navbar-right" ng-hide="nav.isLoggedIn">
+
+                                <li class="dropdown" >
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign Up<strong class="caret"></strong></a>
+                                    <div class="dropdown-menu" ng-hide="form" style="min-width: 250px;">
+                                        <form id="registerForm" name="nav.registerForm" action="index.html" method="post" ng-submit="_addPerson()" novalidate>
+                                            <div>
+                                                <label for="InputEmail" style="color:white">Enter Email *</label>
+                                                <span style="color:yellow" ng-show="nav.registerForm.email.$dirty && nav.registerForm.email.$invalid">
+                                                    <span ng-show="nav.registerForm.email.$error.email">Invalid Email Address.</span>
+                                                    <span ng-show="nav.registerForm.email.$error.required">Email is required.</span>
+                                                </span>
+                                                <input type="email" class="form-control" ng-model="nav.newPerson.email" name="email" id="email"
+                                                       placeholder="Enter Email" required>
+                                            </div>
+                                            <div>
+                                                <label for="InputFirstName" style="color:white">Enter First Name *</label>
+                                                <span style="color:yellow" ng-show="nav.registerForm.firstName.$dirty && nav.registerForm.firstName.$invalid">
+                                                    <span ng-show="nav.registerForm.firstName.$error.required">First Name is required.</span>
+                                                    <span class="error" ng-show="nav.showNewPersonErrors && nav.registerForm.firstName.$error.minlength">
+                                                        Too short! Last name must be at least 2 characters
+                                                    </span>
+                                                    <span class="error" ng-show="nav.showNewPersonErrors && nav.registerForm.firstName.$error.maxlength">
+                                                        Too long! Last name must be 50 characters or less
+                                                    </span>
+                                                </span>
+                                                <input type="text" class="form-control" ng-model="nav.newPerson.firstName" ng-minlength="2" ng-maxlength="50"
+                                                       name="firstName" id="firstName" placeholder="Enter First Name" required>
+                                            </div>
+                                            <div>
+                                                <label for="InputLastName" style="color:white">Enter Last Name *</label>
+                                                <span style="color:yellow" ng-show="nav.registerForm.lastName.$dirty && nav.registerForm.lastName.$invalid">
+                                                    <span ng-show="nav.registerForm.lastName.$error.required">Last Name is required.</span>
+                                                </span>
+                                                <input type="text" class="form-control" ng-model="nav.newPerson.lastName" ng-minlength="2" ng-maxlength="50"
+                                                       name="lastName" id="lastName" placeholder="Enter Last Name" required>
+                                            </div>
+
+
+                                            <label for="UserRole" style="color:white"><strong>Select a Role *</strong></label>
+
+                                            <div class="col-sm-12 form-group">
+                                                <span style="color:yellow" ng-show="nav.registerForm.userRole.$dirty && nav.registerForm.userRole.$invalid">
+                                                    <span ng-show="nav.registerForm.userRole.$error.required">Role is required.</span>
+                                                </span>
+                                                <select id="UserRole" name="UserRole" class="form-control" ng-model="nav.newPerson.userRole"
+                                                        ng-options="registerUser.roleName for registerUser in nav.items" required>
+                                                    <option selected value="">--Select--</option>
+                                                    <option selected value="{{registerUser.roleId}}">{{registerUser.roleName}}</option>
+
+
+                                                </select>
+
+                                            </div>
+
+
+
+
+                                            <div>
+                                                <label for="InputPassword" style="color:white">Enter Password * </label>
+                                                <span style="color:yellow" ng-show="nav.registerForm.password.$dirty && nav.registerForm.password.$invalid">
+                                                    Please enter a password
+                                                    <span ng-show="!nav.registerForm.password.$error.required && (nav.registerForm.password.$error.minlength ||
+                                                        nav.registerForm.password.$error.maxlength) && register.registerForm.password.$dirty">Passwords must be between 8 and 20 characters.</span>
+                                                    <span ng-show="!nav.registerForm.password.$error.required && !nav.registerForm.password.$error.minlength &&
+                                                        !nav.registerForm.password.$error.maxlength && nav.registerForm.password.$error.pattern &&
+                                                        nav.registerForm.password.$dirty">Must contain one lower &amp; uppercase letter, and one number and a symbol(!#$%^&*)</span>
+                                                </span>
+                                                <input type="password" class="form-control" ng-model="nav.newPerson.password" ng-minlength="8" ng-maxlength="20"
+                                                       ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])(?=.*[!#$%^&*])/"
+                                                       name="password" id="password" placeholder="Enter Password" required>
+                                            </div>
+                                            <div>
+                                                <label for="InputPassword" style="color:white">Confirm Password  *</label>
+                                                <span style="color:yellow" ng-show="nav.registerForm.password2.$error.noMatch">Does not match other password </span>
+                                                <input type="password" class="form-control" ng-model="nav.newPerson.password2" name="password2" id="password2"
+                                                       placeholder="Enter Same Password" valid-password-c required>
+                                            </div>
+
+                                            <input class="btn btn-primary" type="button" name="commit" value="Sign Up"
+                                                   data-ng-click="nav.addPerson()" id="cmdRegisterPerson" ng-disabled="nav.registerForm.$invalid"  />
+                                        </form>
+                                    </div>
+                                </li>
+
+                                <li class="dropdown" data-ng-controller="loginController as login">
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
+                                    <div class="dropdown-menu">
+                                        <div class="center-content">
+                                            <form name="login.loginForm" novalidate>
+                                                <input type="email"
+                                                       class="login.showLoginErrors && !login.loginForm.emailInput.$valid}"
+                                                       name="user[username]"
+                                                       placeholder="Enter Email"
+                                                       size="30"
+                                                       data-ng-model="login.newLogin.emailAddress"
+                                                       required />
+
+                                                <input type="password"
+                                                       class="ng-class:{'error': login.showLoginErrors && !login.loginForm.passwordInput.$valid}"
+                                                       name="user[password]"
+                                                       placeholder="Enter Password"
+                                                       size="30"
+                                                       data-ng-model="login.newLogin.password"
+                                                       required
+                                                       ng-minlength="5"
+                                                       ng-maxlength="20" />
+
+                                                <input id="loginCheckbox1"
+                                                       type="checkbox"
+                                                       name="loginCheckbox"
+                                                       data-ng-model="login.newLogin.RememberMe" />
+
+                                                <label class="string optional"> Remember me</label>
+
+                                                <input class="btn btn-primary" type="submit" name="commit" value="Sign In" data-ng-click="login.submitVerification()" />
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+
+                            <ul class="nav navbar-nav navbar-right" ng-show="nav.isLoggedIn">
+                                <li style="color:white;">
+                                    <a href="">
+                                        Hello {{nav.signedInUser.displayName}}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" ng-click="nav.logout()">Logout</a>
+                                </li>
+
+                            </ul>
+
+                        </div><!-- /.navbar-collapse -->
+                    </div>
+                </nav>
+
+            </div>
+        </div><!-- end nav -->
+    </div> <!-- /container -->
+</div>
