@@ -1,0 +1,172 @@
+@model RapidRents.Web.Models.ViewModels.ItemViewModel<int?>
+@{
+    
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="panel col-md-10">
+        <div class="panel-body">
+            <h3 class="title-hero">Add/Edit Address @Model.Item</h3>
+        <form class="form-horizontal" id="addressForm">
+            <input type="hidden" value="@Model.Item" id="test" />
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="line1">Address</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="line1" placeholder="Line1 - Required" name="line1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="line2">Address</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="line2" placeholder="Line2 - Apt/Unit Number" name="line2">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="city">City</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="city" placeholder="City - Required" name="city">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="state">State Id</label>
+                <div class="col-sm-6">
+                    <select class="form-control" id="state" name="state">
+                        <option value="">Select - Required</option>
+                        <option value="1">CA</option>
+                        <option value="2">NV</option>
+                        <option value="3">AZ</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="zipCode">Zip Code</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="zipCode" placeholder="Zip Code - Required" name="zipCode">
+                </div>
+            </div>
+            <div class="bg-default text-center pad20A mrg25T">
+                 
+            <button type="submit" class="btn btn-lg btn-primary" id="button">Submit</button>
+            </div>
+        </form>
+        <div class="container">
+            
+        </div>
+        <div class="itemId"></div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/RapidRents.services.address.js"></script>
+    <script type="text/javascript">
+        
+
+        RapidRents.page.currentId = '@Model.Item';
+    </script>
+    <script type="text/javascript">
+        RapidRents.page.startUp = function () {
+
+            RapidRents.page.initializeValidation();
+
+
+            RapidRents.page.getAddress(RapidRents.page.currentId);
+
+        };
+
+        RapidRents.page.getAddress = function (id) {
+
+            if (id) {
+                RapidRents.services.address.getById(RapidRents.page.currentId, RapidRents.page.AjaxGetByIdSuccess, RapidRents.page.AjaxGetByIdError);
+            }
+        }
+
+        RapidRents.page.initializeValidation = function () {
+            jQuery.validator.setDefaults({
+                debug: true
+            });
+
+            $('#addressForm').validate({
+                rules: {
+                    "line1": {
+                        required: true,
+                    },
+                    "city": {
+                        required: true,
+                    },
+                    "state": {
+                        required: true,
+                    },
+                    "zipCode": {
+                        required: true,
+                        maxlength: 10,
+                    },
+                },
+
+                messages: {
+                    "line1": {
+                        required: "Address is required.",
+                    },
+                    "city": {
+                        required: "City is required.",
+                    },
+                    "state": {
+                        required: "State is required.",
+                    },
+                    "zipCode": {
+                        required: "Zip Code is required.",
+                    },
+                }
+            });
+        };
+
+        RapidRents.page.handlers.add = function () {
+
+
+            if (!$("#addressForm").valid()) {
+                
+                return;
+            }
+            
+            var myData = $("#addressForm").serialize();
+
+            if (!RapidRents.page.currentId) {
+
+                RapidRents.services.address.add(myData, RapidRents.page.AjaxPostSuccess, RapidRents.page.AjaxError);
+            }
+            else {
+
+                var myData = myData + "&id=" + RapidRents.page.currentId;
+                RapidRents.services.address.update(RapidRents.page.currentId, myData, RapidRents.page.AjaxPutSuccess, RapidRents.page.AjaxError);
+            }
+
+
+        }
+
+        RapidRents.page.AjaxPostSuccess = function (data, status, xhr) {
+            RapidRents.page.currentId = (data.item);
+
+        }
+
+        RapidRents.page.AjaxGetByIdSuccess = function (data, status, xhr) {
+
+            if (data && data.item) {
+                RapidRents.page.currentId = data.item.id;
+                RapidRents.page.populateForm(data.item);
+            }
+
+        }
+
+
+        RapidRents.page.populateForm = function (addressData) {
+            $("#line1").val(addressData.line1);
+            $("#line2").val(addressData.line2);
+            $("#city").val(addressData.city);
+            $("#state").val(addressData.state);
+            $("#zipCode").val(addressData.zipCode);
+
+        }
+    </script>
+}
