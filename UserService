@@ -1,0 +1,16 @@
+(function () {
+    "use strict"
+
+    angular.module(APPNAME)
+         .factory('$userService', UserService);
+
+    UserService.$inject = ['$baseService'];
+
+    function UserService($baseService) {
+        var aRapidRentsServiceObject = rapidRents.services.users;
+
+        var newService = $baseService.merge(true, {}, aRapidRentsServiceObject, $baseService);
+
+        return newService;
+    };
+})();
